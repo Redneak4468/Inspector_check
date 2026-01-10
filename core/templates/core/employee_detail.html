@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Карточка сотрудника{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+        <h4 class="card-title mb-3">
+            {{ employee.last_name }}
+            {{ employee.first_name }}
+            {{ employee.middle_name }}
+        </h4>
+
+        <p><b>Должность:</b> {{ employee.position.name }}</p>
+        <p><b>Отдел:</b> {{ employee.department }}</p>
+        <p><b>Email:</b> {{ employee.email|default:"—" }}</p>
+
+        <a href="{% url 'employee_list' %}" class="btn btn-secondary mt-3">
+            ← Назад
+        </a>
+    </div>
+</div>
+{% endblock %}
