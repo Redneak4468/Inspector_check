@@ -1,0 +1,21 @@
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="mb-3 text-danger">Удаление сотрудника</h5>
+
+        <p>
+            Вы уверены, что хотите удалить:
+            <strong>
+                {{ employee.last_name }} {{ employee.first_name }}
+            </strong>?
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger">Удалить</button>
+            <a href="{% url 'employee_list' %}"
+               class="btn btn-outline-secondary">
+                Отмена
+            </a>
+        </form>
+    </div>
+</div>

@@ -3,21 +3,81 @@
 {% block title %}Карточка сотрудника{% endblock %}
 
 {% block content %}
-<div class="card shadow">
+<div class="card shadow-sm">
     <div class="card-body">
-        <h4 class="card-title mb-3">
-            {{ employee.last_name }}
-            {{ employee.first_name }}
-            {{ employee.middle_name }}
-        </h4>
 
-        <p><b>Должность:</b> {{ employee.position.name }}</p>
-        <p><b>Отдел:</b> {{ employee.department }}</p>
-        <p><b>Email:</b> {{ employee.email|default:"—" }}</p>
+        <!-- Заголовок -->
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <h4 class="mb-1">
+                    {{ employee.last_name }} {{ employee.first_name }} {{ employee.middle_name }}
+                </h4>
+                <div class="text-muted">
+                    {{ employee.position|default:"—" }},
+                    {{ employee.department|default:"—" }}
+                </div>
+            </div>
 
-        <a href="{% url 'employee_list' %}" class="btn btn-secondary mt-3">
-            ← Назад
-        </a>
+            <a href="{% url 'employee_edit' employee.id %}"
+               class="btn btn-outline-primary">
+                ✏️ Редактировать
+            </a>
+        </div>
+
+        <!-- Основные данные -->
+        <div class="row mb-3">
+            <div class="col-md-6 mb-2">
+                <div class="text-muted small">Телефон</div>
+                <div>{{ employee.phone_number|default:"—" }}</div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+                <div class="text-muted small">Дата заявки</div>
+                <div>{{ employee.inf_date|date:"d.m.Y"|default:"—" }}</div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Информация -->
+        <div class="mb-3">
+            <div class="text-muted small">Название</div>
+            <div>{{ employee.inf_name|default:"—" }}</div>
+        </div>
+
+        <div class="mb-3">
+            <div class="text-muted small">Источник информации</div>
+            <div>{{ employee.inf_source|default:"—" }}</div>
+        </div>
+
+        <div class="mb-3">
+            <div class="text-muted small">Субъект аудита</div>
+            <div>{{ employee.audit_subject|default:"—" }}</div>
+        </div>
+
+        <div class="mb-3">
+            <div class="text-muted small">Информация</div>
+            <div class="border rounded p-3 bg-light">
+                {{ employee.inf_text|linebreaksbr|default:"—" }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="text-muted small">Результат</div>
+            <div>{{ employee.inf_result|default:"—" }}</div>
+        </div>
+
+        <hr>
+
+        <!-- Кнопки -->
+        <div class="d-flex gap-2">
+            <a href="{% url 'employee_list' %}"
+               class="btn btn-outline-secondary">
+                ← Назад
+            </a>
+        </div>
+
     </div>
 </div>
+
 {% endblock %}

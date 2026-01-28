@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4 class="mb-4">{{ title }}</h4>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- ФИО в одну строку -->
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Фамилия</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Имя</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Отчество</label>
+                    {{ form.middle_name }}
+                </div>
+            </div>
+
+            <!-- Остальные поля по вертикали -->
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Должность</label>
+                    {{ form.position }}
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Подразделение</label>
+                    {{ form.department }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Номер телефона</label>
+                <div class="col-sm-5">{{ form.phone_number }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Название</label>
+                <div class="col-sm-8">{{ form.inf_name }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Дата заявки</label>
+                <div class="col-sm-4">{{ form.inf_date }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Источник информации</label>
+                {{ form.inf_source }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Субъект аудита</label>
+                {{ form.audit_subject }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Информация</label>
+                {{ form.inf_text }}
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Результат</label>
+                {{ form.inf_result }}
+            </div>
+
+            <!-- Кнопки -->
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">
+                    💾 Сохранить
+                </button>
+                <a href="{% url 'employee_list' %}"
+                   class="btn btn-outline-secondary">
+                    Отмена
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
