@@ -18,8 +18,7 @@
                 </div>
             </div>
 
-            <a href="{% url 'employee_edit' employee.id %}"
-               class="btn btn-outline-primary">
+            <a href="{% url 'employee_edit' employee.id %}" class="btn btn-outline-primary">
                 ✏️ Редактировать
             </a>
         </div>
@@ -67,12 +66,36 @@
             <div>{{ employee.inf_result|default:"—" }}</div>
         </div>
 
+        <div class="mb-3">
+            <div class="text-muted small mb-2">Вложения</div>
+            <ul class="list-group">
+                {% for attachment in employee.attachments.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ attachment.original_name }}</span>
+                    <div class="d-flex gap-2">
+                        <a href="{{ attachment.file.url }}" target="_blank" rel="noopener"
+                           class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                        <a href="{% url 'attachment_download' attachment.id %}"
+                           class="btn btn-sm btn-outline-primary">Скачать</a>
+                        <form method="post" action="{% url 'attachment_delete' attachment.id %}"
+                              onsubmit="return confirm('Удалить файл?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{% url 'employee_detail' employee.id %}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                        </form>
+                    </div>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">Нет вложений</li>
+                {% endfor %}
+            </ul>
+        </div>
+
         <hr>
 
         <!-- Кнопки -->
         <div class="d-flex gap-2">
-            <a href="{% url 'employee_list' %}"
-               class="btn btn-outline-secondary">
+            <a href="{% url 'employee_list' %}" class="btn btn-outline-secondary">
                 ← Назад
             </a>
         </div>
