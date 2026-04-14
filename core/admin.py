@@ -1,10 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Position, Department
-
-
-@admin.register(Position)
-class PositionAdmin(admin.ModelAdmin):
-    list_display = ("name",)
+from .models import Employee, Department
 
 
 @admin.register(Department)

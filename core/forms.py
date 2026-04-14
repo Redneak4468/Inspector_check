@@ -23,7 +23,7 @@ class EmployeeForm(forms.ModelForm):
             "last_name": forms.TextInput(attrs={"class": "form-control"}),
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
             "middle_name": forms.TextInput(attrs={"class": "form-control"}),
-            "position": forms.Select(attrs={"class": "form-select"}),
+            "position": forms.TextInput(attrs={"class": "form-control"}),
             "department": forms.Select(attrs={"class": "form-select"}),
             "phone_number": forms.TextInput(attrs={"class": "form-control"}),
 
