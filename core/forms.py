@@ -2,10 +2,24 @@ from django import forms
 from .models import Employee
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    widget = MultipleFileInput
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            return [single_file_clean(d, initial) for d in data]
+        return [single_file_clean(data, initial)] if data else []
+
+
 class EmployeeForm(forms.ModelForm):
-    attachments = forms.FileField(
+    attachments = MultipleFileField(
         required=False,
-        widget=forms.ClearableFileInput(attrs={"class": "form-control", "multiple": True}),
+        widget=MultipleFileInput(attrs={"class": "form-control"}),
         label="Вложения",
     )
 
