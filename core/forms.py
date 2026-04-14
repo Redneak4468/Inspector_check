@@ -3,6 +3,12 @@ from .models import Employee
 
 
 class EmployeeForm(forms.ModelForm):
+    attachments = forms.FileField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={"class": "form-control", "multiple": True}),
+        label="Вложения",
+    )
+
     class Meta:
         model = Employee
         fields = [
@@ -23,15 +29,13 @@ class EmployeeForm(forms.ModelForm):
             "last_name": forms.TextInput(attrs={"class": "form-control"}),
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
             "middle_name": forms.TextInput(attrs={"class": "form-control"}),
-            "position": forms.Select(attrs={"class": "form-select"}),
+            "position": forms.TextInput(attrs={"class": "form-control"}),
             "department": forms.Select(attrs={"class": "form-select"}),
             "phone_number": forms.TextInput(attrs={"class": "form-control"}),
-
             "inf_name": forms.TextInput(attrs={"class": "form-control"}),
             "inf_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "inf_source": forms.TextInput(attrs={"class": "form-control"}),
             "audit_subject": forms.TextInput(attrs={"class": "form-control"}),
-
             "inf_text": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
             "inf_result": forms.TextInput(attrs={"class": "form-control"}),
         }

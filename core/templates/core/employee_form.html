@@ -7,7 +7,7 @@
     <div class="card-body">
         <h4 class="mb-4">{{ title }}</h4>
 
-        <form method="post" novalidate>
+        <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
 
             <!-- ФИО в одну строку -->
@@ -69,18 +69,38 @@
                 {{ form.inf_text }}
             </div>
 
-            <div class="mb-4">
+            <div class="mb-3">
                 <label class="form-label">Результат</label>
                 {{ form.inf_result }}
             </div>
+
+            <div class="mb-4">
+                <label class="form-label">Вложения (можно выбрать несколько)</label>
+                {{ form.attachments }}
+            </div>
+
+            {% if employee and employee.attachments.all %}
+            <div class="mb-4">
+                <div class="text-muted small mb-2">Уже загруженные файлы</div>
+                <ul class="list-group">
+                    {% for attachment in employee.attachments.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ attachment.original_name }}</span>
+                        <a href="{% url 'attachment_download' attachment.id %}" class="btn btn-sm btn-outline-primary">Скачать</a>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">Нет загруженных файлов</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
 
             <!-- Кнопки -->
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-success">
                     💾 Сохранить
                 </button>
-                <a href="{% url 'employee_list' %}"
-                   class="btn btn-outline-secondary">
+                <a href="{% url 'employee_list' %}" class="btn btn-outline-secondary">
                     Отмена
                 </a>
             </div>
