@@ -1,11 +1,16 @@
 from django import forms
+
 from .models import Employee
+
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
 
 
 class EmployeeForm(forms.ModelForm):
     attachments = forms.FileField(
         required=False,
-        widget=forms.ClearableFileInput(attrs={"class": "form-control", "multiple": True}),
+        widget=MultipleFileInput(attrs={"class": "form-control"}),
         label="Вложения",
     )
 
