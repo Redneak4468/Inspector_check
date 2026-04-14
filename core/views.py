@@ -5,6 +5,7 @@ from django.http import FileResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.urls import reverse
 
 from .forms import EmployeeForm
 from .models import Employee, EmployeeAttachment
@@ -95,3 +96,18 @@ def attachment_download(request, attachment_id):
         )
     except FileNotFoundError as exc:
         raise Http404("Файл не найден") from exc
+
+
+@login_required
+def attachment_delete(request, attachment_id):
+    attachment = get_object_or_404(EmployeeAttachment, id=attachment_id)
+    employee_id = attachment.employee_id
+
+    if request.method == "POST":
+        attachment.delete()
+
+    next_url = request.POST.get("next")
+    if next_url:
+        return redirect(next_url)
+
+    return redirect(reverse("employee_edit", kwargs={"employee_id": employee_id}))
