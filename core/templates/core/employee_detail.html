@@ -77,12 +77,6 @@
                            class="btn btn-sm btn-outline-secondary">Просмотр</a>
                         <a href="{% url 'attachment_download' attachment.id %}"
                            class="btn btn-sm btn-outline-primary">Скачать</a>
-                        <form method="post" action="{% url 'attachment_delete' attachment.id %}"
-                              onsubmit="return confirm('Удалить файл?');">
-                            {% csrf_token %}
-                            <input type="hidden" name="next" value="{% url 'employee_detail' employee.id %}">
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
-                        </form>
                     </div>
                 </li>
                 {% empty %}

@@ -56,22 +56,30 @@ def employee_create(request):
 @login_required
 def employee_edit(request, employee_id):
     employee = get_object_or_404(Employee, id=employee_id)
-    form = EmployeeForm(request.POST or None, request.FILES or None, instance=employee)
 
-    if form.is_valid():
+    form = EmployeeForm(
+        request.POST or None,
+        request.FILES or None,
+        instance=employee
+    )
+
+    if request.method == "POST" and form.is_valid():
         employee = form.save()
-        _save_attachments(request, employee)
+
+        for f in request.FILES.getlist("file"):
+            EmployeeAttachment.objects.create(
+                employee=employee,
+                file=f,
+                original_name=f.name
+            )
+
         return redirect("employee_detail", employee_id=employee.id)
 
-    return render(
-        request,
-        "core/employee_form.html",
-        {
-            "form": form,
-            "title": "Редактировать",
-            "employee": employee,
-        },
-    )
+    return render(request, "core/employee_form.html", {
+        "form": form,
+        "employee": employee,
+        "title": "Редактировать"
+    })
 
 
 @login_required
