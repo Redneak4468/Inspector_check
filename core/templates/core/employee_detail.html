@@ -92,6 +92,11 @@
             <a href="{% url 'employee_list' %}" class="btn btn-outline-secondary">
                 ← Назад
             </a>
+
+            <a href="{% url 'employee_export_docx' employee.id %}"
+               class="btn btn-success">
+                📄 Сформировать
+            </a>
         </div>
 
     </div>

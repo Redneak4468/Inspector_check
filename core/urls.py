@@ -8,6 +8,7 @@ from .views import (
     employee_detail,
     employee_edit,
     employee_list,
+    employee_export_docx,
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path("employee/<int:employee_id>/delete/", employee_delete, name="employee_delete"),
     path("attachment/<int:attachment_id>/download/", attachment_download, name="attachment_download"),
     path("attachment/<int:attachment_id>/delete/", attachment_delete, name="attachment_delete"),
+    path("employee/<int:employee_id>/export/", employee_export_docx, name="employee_export_docx"),
 ]

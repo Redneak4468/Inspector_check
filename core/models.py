@@ -25,9 +25,9 @@ class Employee(models.Model):
     inf_name = models.CharField("Название", max_length=100, blank=True)
     inf_date = models.DateField("Дата заявки", null=True, blank=True)
     inf_source = models.CharField("Источник информации", max_length=100, blank=True)
-    audit_subject = models.CharField("Субъект аудита", max_length=100, blank=True)
+    audit_subject = models.CharField("Субъект аудита", max_length=200, blank=True)
     inf_text = models.TextField("Информация", blank=True)
-    inf_result = models.CharField("Результат", max_length=100, blank=True)
+    inf_result = models.CharField("Результат", max_length=500, blank=True)
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
 
     def __str__(self):
@@ -35,12 +35,8 @@ class Employee(models.Model):
 
 
 class EmployeeAttachment(models.Model):
-    employee = models.ForeignKey(
-        Employee,
-        on_delete=models.CASCADE,
-        related_name="attachments",
-        verbose_name="Сотрудник",
-    )
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="attachments",
+        verbose_name="Сотрудник",)
     file = models.FileField("Файл", upload_to="employee_files/%Y/%m/%d/")
     original_name = models.CharField("Имя файла", max_length=255)
     created_at = models.DateTimeField("Дата загрузки", auto_now_add=True)

@@ -1,11 +1,13 @@
+import os
 from pathlib import Path
 
 from django.db.models import Q
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.urls import reverse
+from docxtpl import DocxTemplate
 
 from .forms import EmployeeForm
 from .models import Employee, EmployeeAttachment
@@ -119,3 +121,42 @@ def attachment_delete(request, attachment_id):
         return redirect(next_url)
 
     return redirect(reverse("employee_edit", kwargs={"employee_id": employee_id}))
+
+
+@login_required
+def employee_export_docx(request, employee_id):
+    employee = get_object_or_404(Employee, id=employee_id)
+
+    template_path = os.path.join(
+        "templates_docs",
+        "employee_template.docx"
+    )
+
+    doc = DocxTemplate(template_path)
+
+    context = {
+        "full_name": f"{employee.last_name} {employee.first_name} {employee.middle_name}",
+        "position": employee.position,
+        "department": str(employee.department) if employee.department else "",
+        "inf_date": employee.inf_date.strftime("%d.%m.%Y") if employee.inf_date else "",
+        "phone_number": employee.phone_number,
+        "inf_name": employee.inf_name,
+        "inf_source": employee.inf_source,
+        "audit_subject": employee.audit_subject,
+        "inf_text": employee.inf_text,
+        "inf_result": employee.inf_result,
+        "attachments": employee.attachments.all(),
+    }
+
+    doc.render(context)
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+
+    filename = f"employee_{employee.id}.docx"
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+    doc.save(response)
+
+    return response
